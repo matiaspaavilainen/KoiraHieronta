@@ -20,6 +20,7 @@ interface ClientDAO {
     @Query("SELECT clientId FROM Client WHERE clientEmail = :clientEmail")
     fun getClientId(clientEmail: String): Long
 
+    @Transaction
     @Query("SELECT * FROM Client WHERE clientId = :clientId")
     fun getClientWithDogs(clientId: Long): ClientWithDogs
 

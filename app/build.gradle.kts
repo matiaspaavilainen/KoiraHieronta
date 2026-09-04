@@ -24,7 +24,7 @@ android {
     buildTypes {
         release {
             optimization {
-                enable = false
+                enable = true
             }
         }
     }
@@ -38,7 +38,7 @@ android {
 }
 
 dependencies {
-    implementation(libs.documentfile)
+    implementation(libs.androidx.core.splashscreen)
     ksp(libs.hilt.android.compiler)
     implementation(libs.androidx.documentfile)
     ksp(libs.androidx.room3.compiler)
