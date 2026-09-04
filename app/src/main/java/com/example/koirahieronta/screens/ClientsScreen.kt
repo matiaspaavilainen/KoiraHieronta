@@ -144,7 +144,7 @@ fun ClientCard(
                                                     }
                                                     dogViewModel.deleteDog(dog)
                                                 }
-                                        clientViewModel.deleteClient(client.client)
+                                            clientViewModel.deleteClient(client.client)
                                         }
                                     }
                                 }) {
@@ -163,18 +163,18 @@ fun ClientCard(
 
                     CardEditButtons(
                         {
-                        showDeleteConfirmation.value = true
-                    }, {
-                        if (clientEditState.editing.value) {
-                            clientViewModel.updateClient(
-                                client.client.copy(
-                                    clientName = clientEditState.clientName.text.toString(),
-                                    clientEmail = clientEditState.clientEmail.text.toString()
+                            showDeleteConfirmation.value = true
+                        }, {
+                            if (clientEditState.editing.value) {
+                                clientViewModel.updateClient(
+                                    client.client.copy(
+                                        clientName = clientEditState.clientName.text.toString(),
+                                        clientEmail = clientEditState.clientEmail.text.toString()
+                                    )
                                 )
-                            )
-                        }
-                        clientEditState.editing.value = !clientEditState.editing.value
-                    }, clientEditState.editing.value
+                            }
+                            clientEditState.editing.value = !clientEditState.editing.value
+                        }, clientEditState.editing.value
                     )
                 }
             }

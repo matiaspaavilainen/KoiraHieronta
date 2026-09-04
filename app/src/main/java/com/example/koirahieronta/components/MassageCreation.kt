@@ -62,8 +62,7 @@ fun MassageCreation(
                 .padding(8.dp, 4.dp)
         ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -97,7 +96,9 @@ fun MassageCreation(
                     EditableTextField(massageViewModel.structuralNotesState, "Huomiot rakenteesta")
                     EditableTextField(massageViewModel.otherNotesState, "Muut huomiot")
 
-                    MusclePicker(massageViewModel, finishedStrokesRight, finishedStrokesLeft, drawingMode)
+                    MusclePicker(
+                        massageViewModel, finishedStrokesRight, finishedStrokesLeft, drawingMode
+                    )
                 }
 
                 Button(

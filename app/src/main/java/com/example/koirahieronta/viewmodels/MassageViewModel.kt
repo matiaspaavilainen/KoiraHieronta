@@ -284,8 +284,7 @@ class MassageViewModel @Inject constructor(
         receiptPdfUri: Uri
     ) {
         val attachments = arrayListOf(
-            reportPdfUri,
-            receiptPdfUri
+            reportPdfUri, receiptPdfUri
         )
 
         val intent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
@@ -296,8 +295,7 @@ class MassageViewModel @Inject constructor(
             putExtra(Intent.EXTRA_TEXT, emailBody)
 
             putParcelableArrayListExtra(
-                Intent.EXTRA_STREAM,
-                attachments
+                Intent.EXTRA_STREAM, attachments
             )
 
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

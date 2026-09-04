@@ -6,21 +6,15 @@ import androidx.compose.runtime.mutableStateOf
 import com.example.koirahieronta.database.Massage
 
 data class MassageEditState(
-    val massage: Massage,
-    val reasonForVisit: TextFieldState = TextFieldState(
+    val massage: Massage, val reasonForVisit: TextFieldState = TextFieldState(
         massage.reasonForVisit.orEmpty()
-    ),
-    val movement: TextFieldState = TextFieldState(
+    ), val movement: TextFieldState = TextFieldState(
         massage.movement.orEmpty()
-    ),
-    val currentHealth: TextFieldState = TextFieldState(
+    ), val currentHealth: TextFieldState = TextFieldState(
         massage.currentHealth.orEmpty()
-    ),
-    val structuralNotes: TextFieldState = TextFieldState(
+    ), val structuralNotes: TextFieldState = TextFieldState(
         massage.structuralNotes.orEmpty()
-    ),
-    val otherNotes: TextFieldState = TextFieldState(
+    ), val otherNotes: TextFieldState = TextFieldState(
         massage.otherNotes.orEmpty()
-    ),
-    val editing: MutableState<Boolean> = mutableStateOf(false)
+    ), val editing: MutableState<Boolean> = mutableStateOf(false)
 )

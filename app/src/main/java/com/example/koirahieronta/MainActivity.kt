@@ -1,13 +1,9 @@
 package com.example.koirahieronta
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.example.koirahieronta.data.ClientRepository
 import com.example.koirahieronta.data.DogRepository
 import com.example.koirahieronta.data.MassageRepository
@@ -20,10 +16,13 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var massageDatabase: MassageDatabase
+
     @Inject
     lateinit var massageRepository: MassageRepository
+
     @Inject
     lateinit var dogRepository: DogRepository
+
     @Inject
     lateinit var clientRepository: ClientRepository
 

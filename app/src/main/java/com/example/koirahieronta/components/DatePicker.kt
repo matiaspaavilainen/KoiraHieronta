@@ -47,21 +47,21 @@ fun DatePickerField(
     if (openDialog.value) {
         DatePickerModalInput(
             onDateSelected = { datePickerState ->
-            if (datePickerState.selectedDateMillis != null) {
-                state.edit {
-                    replace(
-                        0,
-                        length,
-                        DateFormat.getDateInstance(2, Locale.GERMANY)
-                            .format(datePickerState.selectedDateMillis)
-                    )
+                if (datePickerState.selectedDateMillis != null) {
+                    state.edit {
+                        replace(
+                            0,
+                            length,
+                            DateFormat.getDateInstance(2, Locale.GERMANY)
+                                .format(datePickerState.selectedDateMillis)
+                        )
+                    }
+                    updateFunction(datePickerState.selectedDateMillis!!)
+                    focusRequester?.requestFocus()
                 }
-                updateFunction(datePickerState.selectedDateMillis!!)
-                focusRequester?.requestFocus()
-            }
-        }, onDismiss = {
-            openDialog.value = false
-        }, openDialog
+            }, onDismiss = {
+                openDialog.value = false
+            }, openDialog
         )
     }
 }

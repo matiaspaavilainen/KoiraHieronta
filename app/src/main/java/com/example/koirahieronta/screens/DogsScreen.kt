@@ -192,8 +192,7 @@ fun DogCard(
                                     dog.massages.forEach { massage ->
                                         massageViewModel.deleteMassage(massage)
                                     }
-                                }
-                            ) {
+                                }) {
                                 Text("Poista")
                             }
 
@@ -209,21 +208,21 @@ fun DogCard(
 
                     CardEditButtons(
                         {
-                            showDeleteConfirmation.value = true
-                        }, {
-                            if (dogEditState.editing.value) {
-                                dogViewModel.updateDog(
-                                    dog.dog.copy(
-                                        name = dogEditState.name.text.toString(),
-                                        dateOfBirth = dogEditState.birthDate,
-                                        breed = dogEditState.breed.text.toString(),
-                                        longTermIllness = dogEditState.longTermIllness.text.toString(),
-                                        hobbies = dogEditState.hobbies.text.toString()
-                                    )
+                        showDeleteConfirmation.value = true
+                    }, {
+                        if (dogEditState.editing.value) {
+                            dogViewModel.updateDog(
+                                dog.dog.copy(
+                                    name = dogEditState.name.text.toString(),
+                                    dateOfBirth = dogEditState.birthDate,
+                                    breed = dogEditState.breed.text.toString(),
+                                    longTermIllness = dogEditState.longTermIllness.text.toString(),
+                                    hobbies = dogEditState.hobbies.text.toString()
                                 )
-                            }
-                            dogEditState.editing.value = !dogEditState.editing.value
-                        }, dogEditState.editing.value
+                            )
+                        }
+                        dogEditState.editing.value = !dogEditState.editing.value
+                    }, dogEditState.editing.value
                     )
                 }
             }

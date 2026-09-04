@@ -5,9 +5,7 @@ import androidx.room3.Index
 import androidx.room3.PrimaryKey
 
 @Entity(
-    indices = [
-        Index(value = ["name", "dateOfBirth"], unique = true)
-    ]
+    indices = [Index(value = ["name", "dateOfBirth"], unique = true)]
 )
 data class Dog(
     val name: String,

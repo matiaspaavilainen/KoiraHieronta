@@ -44,6 +44,7 @@ class MassageRepository @Inject constructor(
     suspend fun upsertMassage(massage: Massage) {
         massageDAO.upsertMassage(massage)
     }
+
     suspend fun deleteMassage(massage: Massage) {
         massageDAO.deleteMassage(massage)
     }
