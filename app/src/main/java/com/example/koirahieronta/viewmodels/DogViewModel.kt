@@ -5,7 +5,9 @@ import androidx.compose.foundation.text.input.clearText
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koirahieronta.data.DogRepository
+import com.example.koirahieronta.data.MassageRepository
 import com.example.koirahieronta.database.Dog
+import com.example.koirahieronta.database.DogWithMassages
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -17,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DogViewModel @Inject constructor(
-    private val dogRepository: DogRepository
+    private val dogRepository: DogRepository, private val massageRepository: MassageRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(DogState())
     private val _dogs = dogRepository.getAllDogs()
@@ -51,8 +53,13 @@ class DogViewModel @Inject constructor(
         return longArrayOf(dogId, ownerId)
     }
 
-    fun deleteDog(dog: Dog) {
-        viewModelScope.launch { dogRepository.deleteDog(dog) }
+    fun deleteDog(dog: DogWithMassages) {
+        viewModelScope.launch {
+            dog.massages.forEach { massage ->
+                massageRepository.deleteMassage(massage)
+            }
+            dogRepository.deleteDog(dog.dog)
+        }
     }
 
     fun updateDog(dog: Dog) {

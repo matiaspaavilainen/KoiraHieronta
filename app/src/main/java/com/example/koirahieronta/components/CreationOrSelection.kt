@@ -32,17 +32,16 @@ import com.example.koirahieronta.viewmodels.DogViewModel
 @Composable
 fun ClientCreationOrSelection(
     clientViewModel: ClientViewModel,
-    clearStates: () -> Unit,
     clientSelectedIndex: MutableIntState,
-    buttonOptions: List<String>,
     nextButtonEnabled: Boolean,
     expandClientCard: MutableState<Boolean>,
     toggleCard: (String) -> Unit,
 
     ) {
+
     if (clientSelectedIndex.intValue == 0) {
         LaunchedEffect(clientSelectedIndex) {
-            clearStates()
+            clientViewModel.clearAllStates()
         }
     }
 
@@ -78,6 +77,7 @@ fun ClientCreationOrSelection(
                     SingleChoiceSegmentedButtonRow(
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        val buttonOptions = listOf("Uusi Asiakas", "Valitse Asiakas")
                         buttonOptions.forEachIndexed { index, label ->
                             SegmentedButton(
                                 shape = SegmentedButtonDefaults.itemShape(
@@ -117,9 +117,7 @@ fun ClientCreationOrSelection(
 fun DogCreationOrSelection(
     dogViewModel: DogViewModel,
     clientViewModel: ClientViewModel,
-    clearStates: () -> Unit,
     dogSelectedIndex: MutableIntState,
-    buttonOptions: List<String>,
     nextButtonEnabled: Boolean,
     expandDogCard: MutableState<Boolean>,
     toggleCard: (String) -> Unit,
@@ -127,7 +125,7 @@ fun DogCreationOrSelection(
     ) {
     if (dogSelectedIndex.intValue == 0) {
         LaunchedEffect(dogSelectedIndex) {
-            clearStates()
+            dogViewModel.clearAllStates()
         }
     }
 
@@ -163,6 +161,7 @@ fun DogCreationOrSelection(
                     SingleChoiceSegmentedButtonRow(
                         modifier = Modifier.fillMaxWidth()
                     ) {
+                        val buttonOptions = listOf("Uusi Koira", "Valitse Koira")
                         buttonOptions.forEachIndexed { index, label ->
                             SegmentedButton(
                                 shape = SegmentedButtonDefaults.itemShape(

@@ -45,4 +45,8 @@ class DogRepository @Inject constructor(
     suspend fun updateDog(dog: Dog) {
         dogDAO.updateDog(dog)
     }
+
+    suspend fun getDogWithMassages(dogId: Long): DogWithMassages {
+        return dogDAO.getDogWithMassages(dogId)
+    }
 }

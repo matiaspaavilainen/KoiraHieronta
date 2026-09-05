@@ -26,4 +26,7 @@ interface DogDAO {
     @Transaction
     @Query("SELECT * FROM Dog ORDER BY name")
     fun getDogsWithMassages(): Flow<List<DogWithMassages>>
+    @Transaction
+    @Query("SELECT * FROM Dog WHERE dogId = :dogId")
+    suspend fun getDogWithMassages(dogId: Long): DogWithMassages
 }

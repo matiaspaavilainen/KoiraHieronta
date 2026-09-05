@@ -39,12 +39,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.koirahieronta.components.CheckBoxRow
 import com.example.koirahieronta.components.EditableTextField
 import com.example.koirahieronta.viewmodels.SettingsViewModel
 
 @Composable
-fun SettingsScreen(settingsViewModel: SettingsViewModel) {
+fun SettingsScreen() {
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
     val expandUserInfoCard = remember { mutableStateOf(false) }
     val expandPreferenceCard = remember { mutableStateOf(false) }
 
@@ -224,15 +226,14 @@ fun UserPreferences(
                             keyboardType = KeyboardType.Number
                         ),
                         label = { Text("Yksikköhinta") },
-//                        outputTransformation = MoneyTransformation()
                     )
 
                     EditableTextField(
-                        settingsViewModel.additionalInfo, "Kuitin teksti, maksun lisätiedot"
+                        settingsViewModel.additionalInfo, "Maksun lisätiedot"
                     )
 
                     EditableTextField(
-                        settingsViewModel.instructions, "Kuitin teksti, käyntiyhteenveto"
+                        settingsViewModel.instructions, "Jatko-ohjeet"
                     )
 
                     EditableTextField(

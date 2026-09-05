@@ -7,6 +7,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.koirahieronta.data.ClientRepository
+import com.example.koirahieronta.data.DogRepository
+import com.example.koirahieronta.data.MassageRepository
 import com.example.koirahieronta.database.Client
 import com.example.koirahieronta.database.ClientWithDogs
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ClientViewModel @Inject constructor(
-    private val clientRepository: ClientRepository
+    private val clientRepository: ClientRepository,
+    private val dogRepository: DogRepository,
+    private val massageRepository: MassageRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow(ClientState())
     val clientNameState = TextFieldState()
@@ -86,8 +90,16 @@ class ClientViewModel @Inject constructor(
         return clientRepository.getClientName(id)
     }
 
-    fun deleteClient(client: Client) {
-        clientRepository.deleteClient(client)
+    fun deleteClient(client: ClientWithDogs) {
+        viewModelScope.launch(Dispatchers.IO) {
+            client.dogs.forEach { dog ->
+                dogRepository.getDogWithMassages(dog.dogId).massages.forEach { massage ->
+                    massageRepository.deleteMassage(massage)
+                }
+                dogRepository.deleteDog(dog)
+            }
+            clientRepository.deleteClient(client.client)
+        }
     }
 
     fun updateClient(client: Client) {

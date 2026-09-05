@@ -1,6 +1,7 @@
 package com.example.koirahieronta.viewmodels
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
@@ -22,7 +23,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.IOException
+import java.text.DateFormat
+import java.util.Locale
 import javax.inject.Inject
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @HiltViewModel
@@ -50,6 +54,8 @@ class SettingsViewModel @Inject constructor(
         userEmail.text.isNotEmpty() && !android.util.Patterns.EMAIL_ADDRESS.matcher(userEmail.text)
             .matches()
     }
+
+    private val df = DateFormat.getDateInstance(2, Locale.GERMANY)
 
     init {
         observeSettings()
@@ -166,7 +172,7 @@ class SettingsViewModel @Inject constructor(
 
     @OptIn(ExperimentalTime::class)
     fun generatePdfReceipt(
-        context: Context, massageId: Long, currentDate: String
+        context: Context, massageId: Long
     ): Result<Uri> {
         return runCatching {
             val resolver = context.contentResolver
@@ -283,7 +289,10 @@ class SettingsViewModel @Inject constructor(
 
                 addText("Y-tunnus: ", userYCode.text.toString())
                 page.canvas.drawText(
-                    "Päivämäärä: $currentDate", 700f, currentY - 50f, paint
+                    "Päivämäärä: ${df.format(Clock.System.now().toEpochMilliseconds())}",
+                    700f,
+                    currentY - 50f,
+                    paint
                 )
 
                 addText("puh: ", userPhoneNum.text.toString())
@@ -344,13 +353,17 @@ class SettingsViewModel @Inject constructor(
 
                 currentY += 50f
 
-                addText("", "Käyntiyhteenveto: ")
+                addText("", "Jatko-ohjeet: ")
                 currentY -= 30f
                 wrapText(instructions.text.toString())
 
                 pdfDocument.finishPage(page)
 
-                val fileName = "hieronta_kuitti_${massageId}_${currentDate}"
+                val fileName = "hieronta_kuitti_${massageId}_${
+                    df.format(
+                        Clock.System.now().toEpochMilliseconds()
+                    )
+                }"
 
                 // Create the file directly in the selected directory
                 val pdfFile = directory.createFile(
@@ -367,5 +380,27 @@ class SettingsViewModel @Inject constructor(
                 pdfDocument.close()
             }
         }
+    }
+
+    fun sendReportEmail(
+        context: Context, clientEmail: String, attachments: ArrayList<Uri?>
+    ) {
+        val intent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
+            type = "application/pdf"
+
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(clientEmail))
+            putExtra(Intent.EXTRA_SUBJECT, emailSubject.text.toString())
+            putExtra(Intent.EXTRA_TEXT, emailBody.text.toString())
+
+            putParcelableArrayListExtra(
+                Intent.EXTRA_STREAM, attachments
+            )
+
+            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        }
+
+        context.startActivity(
+            Intent.createChooser(intent, "Lähetä sähköposti")
+        )
     }
 }

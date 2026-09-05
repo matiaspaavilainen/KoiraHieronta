@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.koirahieronta.components.CardEditButtons
 import com.example.koirahieronta.components.EditableTextField
 import com.example.koirahieronta.components.MusclePicker
@@ -40,9 +41,8 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun MassagesScreen(
-    massageViewModel: MassageViewModel
-) {
+fun MassagesScreen() {
+    val massageViewModel: MassageViewModel = hiltViewModel()
     val state by massageViewModel.state.collectAsState()
 
     LazyColumn(

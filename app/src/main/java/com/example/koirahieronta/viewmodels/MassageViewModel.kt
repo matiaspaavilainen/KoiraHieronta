@@ -2,7 +2,6 @@ package com.example.koirahieronta.viewmodels
 
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
@@ -56,7 +55,6 @@ class MassageViewModel @Inject constructor(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MassageState())
 
 
-    @OptIn(ExperimentalTime::class)
     fun saveMassage(massagedDogId: Long, massageClientId: Long) {
         val visitDate = _state.value.visitDate
         val reasonForVisit = reasonForVisitState.text.toString()
@@ -148,7 +146,7 @@ class MassageViewModel @Inject constructor(
         clientEmail: String,
         dogName: String,
         dogBreed: String,
-        dogDOB: String,
+        dogDOB: Long,
         longTermIllness: String,
         hobbies: String,
     ): Result<Uri> {
@@ -241,7 +239,9 @@ class MassageViewModel @Inject constructor(
                 yOffset += 40f
 
                 addText("Koiran nimi: ", dogName)
-                addText("Syntymäaika: ", dogDOB)
+                addText(
+                    "Syntymäaika: ", DateFormat.getDateInstance(2, Locale.GERMANY).format(dogDOB)
+                )
                 addText("Rotu: ", dogBreed)
                 addText("Perussairaudet: ", longTermIllness)
 
@@ -275,34 +275,4 @@ class MassageViewModel @Inject constructor(
         }
     }
 
-    fun sendReportEmail(
-        context: Context,
-        clientEmail: String,
-        emailSubject: String,
-        emailBody: String,
-        reportPdfUri: Uri,
-        receiptPdfUri: Uri
-    ) {
-        val attachments = arrayListOf(
-            reportPdfUri, receiptPdfUri
-        )
-
-        val intent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
-            type = "application/pdf"
-
-            putExtra(Intent.EXTRA_EMAIL, arrayOf(clientEmail))
-            putExtra(Intent.EXTRA_SUBJECT, emailSubject)
-            putExtra(Intent.EXTRA_TEXT, emailBody)
-
-            putParcelableArrayListExtra(
-                Intent.EXTRA_STREAM, attachments
-            )
-
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
-
-        context.startActivity(
-            Intent.createChooser(intent, "Lähetä sähköposti")
-        )
-    }
 }

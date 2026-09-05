@@ -35,19 +35,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.koirahieronta.components.CardEditButtons
 import com.example.koirahieronta.components.EditableTextField
 import com.example.koirahieronta.components.NullableTextField
+import com.example.koirahieronta.database.Client
 import com.example.koirahieronta.database.ClientWithDogs
 import com.example.koirahieronta.viewmodels.ClientEditState
 import com.example.koirahieronta.viewmodels.ClientViewModel
 import com.example.koirahieronta.viewmodels.DogViewModel
 import com.example.koirahieronta.viewmodels.MassageViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Composable
-fun ClientsScreen(
-    clientViewModel: ClientViewModel, dogViewModel: DogViewModel
-) {
+fun ClientsScreen() {
+    val clientViewModel: ClientViewModel = hiltViewModel()
     val clientState by clientViewModel.state.collectAsState()
 
     LazyColumn(
@@ -58,22 +55,17 @@ fun ClientsScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(clientState.clients, key = { it.client.clientId }) { client ->
-            ClientCard(client, clientViewModel, dogViewModel)
+            ClientCard(client, clientViewModel)
         }
     }
-
 }
 
 @Composable
 fun ClientCard(
     client: ClientWithDogs,
     clientViewModel: ClientViewModel,
-    dogViewModel: DogViewModel,
 ) {
-    val massageViewModel: MassageViewModel = hiltViewModel()
-
     val clientEditState = ClientEditState(client.client)
-    val dogState = dogViewModel.state.collectAsStateWithLifecycle()
 
     var expanded by rememberSaveable { mutableStateOf(false) }
     val showDeleteConfirmation = remember { mutableStateOf(false) }
@@ -135,18 +127,7 @@ fun ClientCard(
                         }, confirmButton = {
                             TextButton(
                                 onClick = {
-                                    CoroutineScope(Dispatchers.IO).launch {
-                                        client.dogs.forEach { dog ->
-                                            dogState.value.dogs.filter { it.dog == dog }
-                                                .forEach { (dog, massages) ->
-                                                    massages.forEach { massage ->
-                                                        massageViewModel.deleteMassage(massage)
-                                                    }
-                                                    dogViewModel.deleteDog(dog)
-                                                }
-                                            clientViewModel.deleteClient(client.client)
-                                        }
-                                    }
+                                    clientViewModel.deleteClient(client)
                                 }) {
                                 Text("Poista")
                             }
@@ -163,18 +144,18 @@ fun ClientCard(
 
                     CardEditButtons(
                         {
-                            showDeleteConfirmation.value = true
-                        }, {
-                            if (clientEditState.editing.value) {
-                                clientViewModel.updateClient(
-                                    client.client.copy(
-                                        clientName = clientEditState.clientName.text.toString(),
-                                        clientEmail = clientEditState.clientEmail.text.toString()
-                                    )
+                        showDeleteConfirmation.value = true
+                    }, {
+                        if (clientEditState.editing.value) {
+                            clientViewModel.updateClient(
+                                client.client.copy(
+                                    clientName = clientEditState.clientName.text.toString(),
+                                    clientEmail = clientEditState.clientEmail.text.toString()
                                 )
-                            }
-                            clientEditState.editing.value = !clientEditState.editing.value
-                        }, clientEditState.editing.value
+                            )
+                        }
+                        clientEditState.editing.value = !clientEditState.editing.value
+                    }, clientEditState.editing.value
                     )
                 }
             }

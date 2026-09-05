@@ -41,9 +41,6 @@ import com.example.koirahieronta.screens.DogsScreen
 import com.example.koirahieronta.screens.HomeScreen
 import com.example.koirahieronta.screens.MassagesScreen
 import com.example.koirahieronta.screens.SettingsScreen
-import com.example.koirahieronta.viewmodels.ClientViewModel
-import com.example.koirahieronta.viewmodels.DogViewModel
-import com.example.koirahieronta.viewmodels.MassageViewModel
 import com.example.koirahieronta.viewmodels.SettingsViewModel
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.milliseconds
@@ -80,43 +77,23 @@ fun AppNavHost(
             .consumeWindowInsets(contentPadding)
     ) {
         composable(Destination.HOME.route) {
-            val massageViewModel: MassageViewModel = hiltViewModel()
-            val dogViewModel: DogViewModel = hiltViewModel()
-            val clientViewModel: ClientViewModel = hiltViewModel()
-            val settingsViewModel: SettingsViewModel = hiltViewModel()
-
-            HomeScreen(
-                massageViewModel, dogViewModel, clientViewModel, settingsViewModel
-            )
+            HomeScreen()
         }
 
         composable(Destination.MASSAGES.route) {
-            val massageViewModel: MassageViewModel = hiltViewModel()
-            MassagesScreen(massageViewModel)
+            MassagesScreen()
         }
 
         composable(Destination.DOGS.route) {
-            val dogViewModel: DogViewModel = hiltViewModel()
-            val massageViewModel: MassageViewModel = hiltViewModel()
-            val clientViewModel: ClientViewModel = hiltViewModel()
-
-            DogsScreen(
-                dogViewModel, massageViewModel, clientViewModel
-            )
+            DogsScreen()
         }
 
         composable(Destination.CLIENTS.route) {
-            val clientViewModel: ClientViewModel = hiltViewModel()
-            val dogViewModel: DogViewModel = hiltViewModel()
-
-            ClientsScreen(
-                clientViewModel, dogViewModel
-            )
+            ClientsScreen()
         }
 
         composable(Destination.SETTINGS.route) {
-            val settingsViewModel: SettingsViewModel = hiltViewModel()
-            SettingsScreen(settingsViewModel)
+            SettingsScreen()
         }
     }
 }

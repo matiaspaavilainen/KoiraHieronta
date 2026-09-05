@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.example.koirahieronta.components.CardEditButtons
 import com.example.koirahieronta.components.DatePickerField
 import com.example.koirahieronta.components.EditableTextField
@@ -52,9 +53,10 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DogsScreen(
-    dogViewModel: DogViewModel, massageViewModel: MassageViewModel, clientViewModel: ClientViewModel
-) {
+fun DogsScreen() {
+    val dogViewModel: DogViewModel = hiltViewModel()
+    val clientViewModel: ClientViewModel = hiltViewModel()
+
     val dogState by dogViewModel.state.collectAsState()
 
     LazyColumn(
@@ -65,7 +67,7 @@ fun DogsScreen(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(dogState.dogs, key = { it.dog.dogId }) { dog ->
-            DogCard(dog, dogViewModel, massageViewModel, clientViewModel)
+            DogCard(dog, dogViewModel, clientViewModel)
         }
     }
 }
@@ -74,7 +76,6 @@ fun DogsScreen(
 fun DogCard(
     dog: DogWithMassages,
     dogViewModel: DogViewModel,
-    massageViewModel: MassageViewModel,
     clientViewModel: ClientViewModel
 ) {
     val dogEditState = DogEditState(dog.dog)
@@ -82,6 +83,7 @@ fun DogCard(
 
     val birthDateState = rememberTextFieldState(df.format(Date(dog.dog.dateOfBirth)))
     var ownerName = ""
+
     LaunchedEffect(Unit) {
         CoroutineScope(Dispatchers.IO).launch {
             ownerName = clientViewModel.getClientName(dog.dog.ownerId)
@@ -188,10 +190,7 @@ fun DogCard(
                         }, confirmButton = {
                             TextButton(
                                 onClick = {
-                                    dogViewModel.deleteDog(dog.dog)
-                                    dog.massages.forEach { massage ->
-                                        massageViewModel.deleteMassage(massage)
-                                    }
+                                    dogViewModel.deleteDog(dog)
                                 }) {
                                 Text("Poista")
                             }
