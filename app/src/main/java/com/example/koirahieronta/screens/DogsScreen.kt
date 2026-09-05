@@ -43,7 +43,6 @@ import com.example.koirahieronta.database.DogWithMassages
 import com.example.koirahieronta.viewmodels.ClientViewModel
 import com.example.koirahieronta.viewmodels.DogEditState
 import com.example.koirahieronta.viewmodels.DogViewModel
-import com.example.koirahieronta.viewmodels.MassageViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -207,21 +206,21 @@ fun DogCard(
 
                     CardEditButtons(
                         {
-                        showDeleteConfirmation.value = true
-                    }, {
-                        if (dogEditState.editing.value) {
-                            dogViewModel.updateDog(
-                                dog.dog.copy(
-                                    name = dogEditState.name.text.toString(),
-                                    dateOfBirth = dogEditState.birthDate,
-                                    breed = dogEditState.breed.text.toString(),
-                                    longTermIllness = dogEditState.longTermIllness.text.toString(),
-                                    hobbies = dogEditState.hobbies.text.toString()
+                            showDeleteConfirmation.value = true
+                        }, {
+                            if (dogEditState.editing.value) {
+                                dogViewModel.updateDog(
+                                    dog.dog.copy(
+                                        name = dogEditState.name.text.toString(),
+                                        dateOfBirth = dogEditState.birthDate,
+                                        breed = dogEditState.breed.text.toString(),
+                                        longTermIllness = dogEditState.longTermIllness.text.toString(),
+                                        hobbies = dogEditState.hobbies.text.toString()
+                                    )
                                 )
-                            )
-                        }
-                        dogEditState.editing.value = !dogEditState.editing.value
-                    }, dogEditState.editing.value
+                            }
+                            dogEditState.editing.value = !dogEditState.editing.value
+                        }, dogEditState.editing.value
                     )
                 }
             }

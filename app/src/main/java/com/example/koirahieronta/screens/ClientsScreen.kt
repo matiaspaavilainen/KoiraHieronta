@@ -31,16 +31,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.koirahieronta.components.CardEditButtons
 import com.example.koirahieronta.components.EditableTextField
 import com.example.koirahieronta.components.NullableTextField
-import com.example.koirahieronta.database.Client
 import com.example.koirahieronta.database.ClientWithDogs
 import com.example.koirahieronta.viewmodels.ClientEditState
 import com.example.koirahieronta.viewmodels.ClientViewModel
-import com.example.koirahieronta.viewmodels.DogViewModel
-import com.example.koirahieronta.viewmodels.MassageViewModel
 
 @Composable
 fun ClientsScreen() {
@@ -144,18 +140,18 @@ fun ClientCard(
 
                     CardEditButtons(
                         {
-                        showDeleteConfirmation.value = true
-                    }, {
-                        if (clientEditState.editing.value) {
-                            clientViewModel.updateClient(
-                                client.client.copy(
-                                    clientName = clientEditState.clientName.text.toString(),
-                                    clientEmail = clientEditState.clientEmail.text.toString()
+                            showDeleteConfirmation.value = true
+                        }, {
+                            if (clientEditState.editing.value) {
+                                clientViewModel.updateClient(
+                                    client.client.copy(
+                                        clientName = clientEditState.clientName.text.toString(),
+                                        clientEmail = clientEditState.clientEmail.text.toString()
+                                    )
                                 )
-                            )
-                        }
-                        clientEditState.editing.value = !clientEditState.editing.value
-                    }, clientEditState.editing.value
+                            }
+                            clientEditState.editing.value = !clientEditState.editing.value
+                        }, clientEditState.editing.value
                     )
                 }
             }
