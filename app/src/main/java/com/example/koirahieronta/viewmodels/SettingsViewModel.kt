@@ -1,5 +1,6 @@
 package com.example.koirahieronta.viewmodels
 
+import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
@@ -397,6 +398,16 @@ class SettingsViewModel @Inject constructor(
             )
 
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+            val clipData = ClipData.newUri(
+                context.contentResolver, "PDF attachments", attachments[0]
+            )
+
+            for (uri in attachments.drop(1)) {
+                clipData.addItem(ClipData.Item(uri))
+            }
+
+            setClipData(clipData)
         }
 
         context.startActivity(
