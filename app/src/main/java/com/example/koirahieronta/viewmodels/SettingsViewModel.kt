@@ -384,7 +384,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun sendReportEmail(
-        context: Context, clientEmail: String, attachments: ArrayList<Uri?>
+        context: Context, clientEmail: String, attachments: List<Uri?>,
     ) {
         val intent = Intent(Intent.ACTION_SEND_MULTIPLE).apply {
             type = "application/pdf"
@@ -394,7 +394,7 @@ class SettingsViewModel @Inject constructor(
             putExtra(Intent.EXTRA_TEXT, emailBody.text.toString())
 
             putParcelableArrayListExtra(
-                Intent.EXTRA_STREAM, attachments
+                Intent.EXTRA_STREAM, ArrayList(attachments.filterNotNull())
             )
 
             addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

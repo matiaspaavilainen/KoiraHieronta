@@ -194,7 +194,7 @@ fun SavingCard(
                                     settingsViewModel.sendReportEmail(
                                         context,
                                         clientViewModel.clientEmailState.text.toString(),
-                                        arrayListOf(reportUri, receiptUri)
+                                        listOf(reportUri, receiptUri)
                                     )
                                 }
                             }
