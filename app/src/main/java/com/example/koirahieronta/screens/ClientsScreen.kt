@@ -106,10 +106,12 @@ fun ClientCard(
                         imeAction = ImeAction.Done,
                     )
 
-                    val dogs = StringBuilder()
-                    client.dogs.forEachIndexed { index, dog -> dogs.insert(index, dog.name + "\n") }
+                    var dogs = ""
+                    for (dog in client.dogs) {
+                        dogs += dog.name + "\n"
+                    }
 
-                    NullableTextField("Koirat", dogs.toString().trimEnd('\n'))
+                    NullableTextField("Koirat", dogs.trimEnd('\n'))
 
                     if (showDeleteConfirmation.value) {
                         AlertDialog(title = {

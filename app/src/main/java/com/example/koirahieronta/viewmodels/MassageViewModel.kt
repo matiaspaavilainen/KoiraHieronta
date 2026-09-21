@@ -153,7 +153,6 @@ class MassageViewModel @Inject constructor(
         return runCatching {
             val resolver = context.contentResolver
 
-            // Get the directory the user selected previously
             val directory = DocumentFile.fromTreeUri(context, directoryUri)
                 ?: throw IOException("Could not access selected directory")
 
@@ -161,13 +160,12 @@ class MassageViewModel @Inject constructor(
                 throw IOException("Selected directory is not writable")
             }
 
-            // Create the PDF in memory
             val pdfDocument = PdfDocument()
 
             try {
                 val pageInfo = PdfDocument.PageInfo.Builder(
-                    595 * 2,  // A4-ish width at 72 DPI
-                    842 * 2,  // A4-ish height
+                    595 * 2,
+                    842 * 2,
                     1
                 ).create()
 
@@ -259,7 +257,6 @@ class MassageViewModel @Inject constructor(
                 val fileName =
                     "hieronta_raportti_${_state.value.massageId}_${dogName}_${visitDateTextState.text}"
 
-                // Create the file directly in the selected directory
                 val pdfFile = directory.createFile(
                     "application/pdf", fileName
                 ) ?: throw IOException("Could not create PDF file")
