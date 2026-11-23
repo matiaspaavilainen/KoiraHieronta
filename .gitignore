@@ -15,3 +15,4 @@
 local.properties
 app/debug
 app/release
+app/src/main/res/drawable-nodpi/koira_lihakset.png
